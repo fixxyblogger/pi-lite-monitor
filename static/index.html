@@ -1,0 +1,43 @@
+<!DOCTYPE html lang="en" meta="viewport" content="width=device-width, initial-scale=1.0">
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pi Lite Monitor</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 1em;
+            background: #f0f0f0;
+        }
+
+        .metric {
+            margin: 0.5em 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🔎 Pi Lite Monitor</h1>
+    <div class="metric" id="cpu"></div>
+    <div class="metric" id="memory"></div>
+    <div class="metric" id="temp"></div>
+    <div class="metric" id="network"></div>
+    <div class="metric" id="disk"></div>
+
+    <script>
+        async function fetchStats() {
+            const res = await fetch('/api/stats');
+            const data = await res.json();
+            document.getElementById('cpu').textContent = `🖥️ CPU Usage: ${data.cpu_usage.toFixed(1)}%`;
+            document.getElementById('memory').textContent = `💡 Memory: ${data.used_memory.toLocaleString("en-US")}/${data.total_memory.toLocaleString("en-US")} MB`;
+            document.getElementById('temp').textContent = `🌡️ Temperature: ${data.temp} °C`;
+            document.getElementById('network').textContent = `🛜 Network: 🔽 Download ${data.received.toLocaleString("en-US")} MB / 🔼 Upload ${data.transmitted.toLocaleString("en-US")} MB`;
+            document.getElementById('disk').textContent = `💾 Disk: 🟩 Availiable: ${data.free_disk.toLocaleString("en-US")} MB  | 🟥 Used: ${data.used_disk.toLocaleString("en-US")} MB | Total: ${data.total_disk.toLocaleString("en-US")} MB`;
+        }
+        setInterval(fetchStats, 5000);
+        fetchStats();
+    </script>
+</body>
+
+</html>
