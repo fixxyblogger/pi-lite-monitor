@@ -17,7 +17,7 @@ System Info: Use sysinfo or heim crate in Rust
 
 Optional: Serve via Unix Socket or TCP, can use nginx as a proxy
 
-# Core Features
+# 🔎 Core Features
 CPU usage (per core)
 
 Memory usage
@@ -27,3 +27,11 @@ Disk usage (root and mount points)
 Temperature
 
 Network traffic (Down/Up)
+
+## 🚀 Quick Install
+
+Run this on your Raspberry Pi:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/fixxyblogger/pi-lite-monitor/main/install.sh | bash
+```

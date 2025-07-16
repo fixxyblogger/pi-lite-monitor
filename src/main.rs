@@ -6,6 +6,8 @@ use tokio::sync::RwLock;
 
 #[derive(Serialize, Clone)]
 struct Stats {
+    host: String,
+    os: String,
     total_memory: u64,
     used_memory: u64,
     cpu_usage: f32,
@@ -55,6 +57,12 @@ async fn get_stats(system: Arc<RwLock<System>>) -> Json<Stats> {
     }
     let disk_used = disk_total - disk_free;
     Json(Stats {
+        host: System::host_name().unwrap_or_else(|| "Unknown".to_string()),
+        os: format!(
+            "{} {}",
+            System::name().unwrap_or_else(|| "Unknown".to_string()),
+            System::os_version().unwrap_or_else(|| "Unknown".to_string())
+        ),
         total_memory: sys.total_memory() / 1000024, // Convert to MB
         used_memory: sys.used_memory() / 1000024,   // Convert to MB
         cpu_usage: cpu,
@@ -83,7 +91,7 @@ async fn main() {
             get(|| async { axum::response::Html(include_str!("../static/index.html")) }),
         );
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:9000").await.unwrap();
     println!("Listening on http://{}", listener.local_addr().unwrap());
     axum::serve(listener, app).await.unwrap();
 }

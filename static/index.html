@@ -1,39 +1,110 @@
-<!DOCTYPE html lang="en" meta="viewport" content="width=device-width, initial-scale=1.0">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A simple Raspberry Pi monitoring tool">
+    <meta name="author" content="Chanchai Jeimvijack">
+    <meta name="keywords" content="Raspberry Pi, Monitor, Stats, CPU, Memory, Temperature, Network, Disk">
     <title>Pi Lite Monitor</title>
+    <link rel="icon" href="favicon.ico">
     <style>
         body {
-            font-family: sans-serif;
-            padding: 1em;
-            background: #f0f0f0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f6f8fa;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: #fff;
+            border-radius: 1.2em;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1.5px 4px rgba(0, 0, 0, 0.04);
+            padding: 2em 2.5em;
+            max-width: 400px;
+            width: 100%;
+            margin: 2em;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2em;
+        }
+
+        h1 {
+            font-size: 1.7em;
+            margin: 0 0 0.5em 0;
+            text-align: center;
+            letter-spacing: 0.01em;
+        }
+
+        .metrics-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
         }
 
         .metric {
-            margin: 0.5em 0;
+            background: #f0f4f8;
+            border-radius: 0.7em;
+            padding: 1em 1.2em;
+            font-size: 1.08em;
+            display: flex;
+            align-items: center;
+            gap: 0.7em;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+        }
+
+        .metric-icon {
+            font-size: 1.3em;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1em 0.5em;
+                max-width: 120vw;
+            }
+
+            .metric {
+                font-size: 1em;
+                padding: 0.7em 0.7em;
+            }
+
+            h1 {
+                font-size: 1.2em;
+            }
         }
     </style>
 </head>
 
 <body>
-    <h1>🔎 Pi Lite Monitor</h1>
-    <div class="metric" id="cpu"></div>
-    <div class="metric" id="memory"></div>
-    <div class="metric" id="temp"></div>
-    <div class="metric" id="network"></div>
-    <div class="metric" id="disk"></div>
-
+    <div class="container">
+        <h1>🔎 Pi Lite Monitor</h1>
+        <div class="metrics-list">
+            <div class="metric" id="host"><span class="metric-icon">💻</span><span></span></div>
+            <div class="metric" id="os"><span class="metric-icon">🌐</span><span></span></div>
+            <div class="metric" id="cpu"><span class="metric-icon">⚙️</span><span></span></div>
+            <div class="metric" id="memory"><span class="metric-icon">💡</span><span></span></div>
+            <div class="metric" id="temp"><span class="metric-icon">🌡️</span><span></span></div>
+            <div class="metric" id="network"><span class="metric-icon">🛜</span><span></span></div>
+            <div class="metric" id="disk"><span class="metric-icon">💽</span><span></span></div>
+        </div>
+    </div>
     <script>
         async function fetchStats() {
             const res = await fetch('/api/stats');
             const data = await res.json();
-            document.getElementById('cpu').textContent = `🖥️ CPU Usage: ${data.cpu_usage.toFixed(1)}%`;
-            document.getElementById('memory').textContent = `💡 Memory: ${data.used_memory.toLocaleString("en-US")}/${data.total_memory.toLocaleString("en-US")} MB`;
-            document.getElementById('temp').textContent = `🌡️ Temperature: ${data.temp} °C`;
-            document.getElementById('network').textContent = `🛜 Network: 🔽 Download ${data.received.toLocaleString("en-US")} MB / 🔼 Upload ${data.transmitted.toLocaleString("en-US")} MB`;
-            document.getElementById('disk').textContent = `💾 Disk: 🟩 Availiable: ${data.free_disk.toLocaleString("en-US")} MB  | 🟥 Used: ${data.used_disk.toLocaleString("en-US")} MB | Total: ${data.total_disk.toLocaleString("en-US")} MB`;
+            document.querySelector('#host span:last-child').textContent = `Host: ${data.host}`;
+            document.querySelector('#os span:last-child').textContent = `OS: ${data.os}`;
+            document.querySelector('#cpu span:last-child').textContent = `CPU Usage: ${data.cpu_usage.toFixed(1)}%`;
+            document.querySelector('#memory span:last-child').textContent = `Memory: ${data.used_memory.toLocaleString("en-US")} / ${data.total_memory.toLocaleString("en-US")} MB`;
+            document.querySelector('#temp span:last-child').textContent = `Temperature: ${data.temp} °C`;
+            document.querySelector('#network span:last-child').textContent = `Download ${data.received.toLocaleString("en-US")} MB / Upload ${data.transmitted.toLocaleString("en-US")} MB`;
+            document.querySelector('#disk span:last-child').innerHTML =
+                `Storage: ${data.free_disk.toLocaleString("en-US")} MB<br>Used: ${data.used_disk.toLocaleString("en-US")} MB<br>Total: ${data.total_disk.toLocaleString("en-US")} MB`;
         }
         setInterval(fetchStats, 5000);
         fetchStats();
