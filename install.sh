@@ -2,28 +2,31 @@
 
 set -e
 
-echo "🔧 Installing Pi Lite Monitor..."
+echo "📦 Installing Pi Lite Monitor (no git required)..."
 
-# Install Rust if missing
+ARCHIVE_URL="https://github.com/fixxyblogger/pi-lite-monitor/archive/refs/heads/main.tar.gz"
+
+echo "📥 Downloading source..."
+curl -L "$ARCHIVE_URL" -o pi-lite-monitor.tar.gz
+
+echo "📂 Extracting..."
+tar -xzf pi-lite-monitor.tar.gz
+cd pi-lite-monitor-main
+
+echo "🔧 Building (Rust required)..."
 if ! command -v cargo >/dev/null 2>&1; then
-  echo "🔹 Installing Rust (this may take a while)..."
-  curl https://sh.rustup.rs -sSf | sh -s -- -y
-  source $HOME/.cargo/env
+  echo "❗ Rust not installed. Please install Rust first."
+  exit 1
 fi
 
-# Clone and build the app
-git clone https://github.com/YOUR_USERNAME/pi-lite-monitor.git
-cd pi-lite-monitor
-
-echo "📦 Building in release mode..."
 cargo build --release
 
-# Move binary and static files
+echo "🚚 Installing binary and static files..."
 sudo cp target/release/pi-lite-monitor /usr/local/bin/
 sudo mkdir -p /opt/pi-lite-monitor/static
 sudo cp -r static/* /opt/pi-lite-monitor/static/
 
-# Create systemd service
+echo "🛠️ Setting up systemd service..."
 sudo tee /etc/systemd/system/pi-lite-monitor.service > /dev/null <<EOF
 [Unit]
 Description=Pi Lite Monitor
