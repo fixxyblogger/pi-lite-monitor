@@ -91,7 +91,7 @@ async fn main() {
             get(|| async { axum::response::Html(include_str!("../static/index.html")) }),
         );
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:9000").await.unwrap();
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:5000").await.unwrap();
     println!("Listening on http://{}", listener.local_addr().unwrap());
     axum::serve(listener, app).await.unwrap();
 }

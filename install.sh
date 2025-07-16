@@ -48,4 +48,4 @@ sudo systemctl daemon-reload
 sudo systemctl enable pi-lite-monitor
 sudo systemctl start pi-lite-monitor
 
-echo "✅ Installed! Open in browser: http://<your-pi-ip>:9000"
+echo "✅ Installed! Open in browser: http://<your-pi-ip>:5000"
