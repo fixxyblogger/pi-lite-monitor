@@ -13,12 +13,14 @@ echo "📂 Extracting..."
 tar -xzf pi-lite-monitor.tar.gz
 cd pi-lite-monitor-main
 
-echo "🔧 Building (Rust required)..."
+# Install Rust if missing
 if ! command -v cargo >/dev/null 2>&1; then
-  echo "❗ Rust not installed. Please install Rust first."
-  exit 1
+  echo "🔹 Installing Rust (this may take a while)..."
+  curl https://sh.rustup.rs -sSf | sh -s -- -y
+  source $HOME/.cargo/env
 fi
 
+echo "📦 Building in release mode..."
 cargo build --release
 
 echo "🚚 Installing binary and static files..."
