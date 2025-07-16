@@ -38,7 +38,6 @@ After=network.target
 ExecStart=/usr/local/bin/pi-lite-monitor
 WorkingDirectory=/opt/pi-lite-monitor
 Restart=on-failure
-User=pi
 
 [Install]
 WantedBy=multi-user.target
