@@ -10,6 +10,7 @@ struct Stats {
     os: String,
     total_memory: u64,
     used_memory: u64,
+    mempercentage: f32,
     cpu_usage: f32,
     temp: f32,
     received: u64,
@@ -65,6 +66,7 @@ async fn get_stats(system: Arc<RwLock<System>>) -> Json<Stats> {
         ),
         total_memory: sys.total_memory() / 1000024, // Convert to MB
         used_memory: sys.used_memory() / 1000024,   // Convert to MB
+        mempercentage: sys.used_memory() as f32 / sys.total_memory() as f32 * 100.0,
         cpu_usage: cpu,
         temp: selecttemp, // Use 0.0 if temperature is not available
         received: total_received,
@@ -91,7 +93,7 @@ async fn main() {
             get(|| async { axum::response::Html(include_str!("../static/index.html")) }),
         );
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:5000").await.unwrap();
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:9000").await.unwrap();
     println!("Listening on http://{}", listener.local_addr().unwrap());
     axum::serve(listener, app).await.unwrap();
 }
