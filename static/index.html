@@ -101,7 +101,7 @@
             document.querySelector('#os span:last-child').textContent = `OS: ${data.os}`;
             document.querySelector('#cpu span:last-child').textContent = `CPU Usage: ${data.cpu_usage.toFixed(1)}%`;
             document.querySelector('#memory span:last-child').textContent = `Memory: ${data.used_memory.toLocaleString("en-US")} / ${data.total_memory.toLocaleString("en-US")} MB (${data.mempercentage.toFixed(1)}%)`;
-            document.querySelector('#temp span:last-child').textContent = `Temperature: ${data.temp} °C`;
+            document.querySelector('#temp span:last-child').textContent = `Temperature: ${data.temp.toFixed(2)} °C`;
             document.querySelector('#network span:last-child').textContent = `Download ${data.received.toLocaleString("en-US")} MB / Upload ${data.transmitted.toLocaleString("en-US")} MB`;
             document.querySelector('#disk span:last-child').innerHTML =
                 `Storage: ${data.free_disk.toLocaleString("en-US")} MB<br>Used: ${data.used_disk.toLocaleString("en-US")} MB<br>Total: ${data.total_disk.toLocaleString("en-US")} MB`;

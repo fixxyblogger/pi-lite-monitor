@@ -35,3 +35,5 @@ Run this on your Raspberry Pi:
 ```bash
 curl -sSL https://raw.githubusercontent.com/fixxyblogger/pi-lite-monitor/main/install.sh | bash
 ```
+
+![Screen Shot](screenshot.png)
