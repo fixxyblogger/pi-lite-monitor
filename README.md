@@ -1,3 +1,6 @@
+<p align="center">
+  <a href="https://www.paypal.com/paypalme/chanchaijeimvijack" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
+</p>
 # pi-lite-monitor
 Lightweight system resource monitoring (CPU, RAM, Disk, Temp, Network) via a web UI Target: Raspberry Pi  and minimal Linux systems
 
